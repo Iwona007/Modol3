@@ -1,4 +1,4 @@
-# Modol3
+# Modol-3
 Akademia Spring modol 3 - REST API dla listy pojazdów
 
 Pojazd - pola: id, mark, model, color.
