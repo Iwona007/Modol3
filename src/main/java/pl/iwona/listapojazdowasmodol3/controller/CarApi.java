@@ -85,7 +85,7 @@ public class CarApi {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PatchMapping("/{id}/color/{newColor}}") // to nie działa convertowanie z enum
+    @PatchMapping("/{id}/color/{newColor}}") // tu nie działa convertowanie z enum
     public ResponseEntity<Car> updateColor(@PathVariable Long id, @PathVariable String newColor) {
         boolean change = carServiceInter.changeColor(id, convertColor.convertToEnum(newColor));
         if (change) {

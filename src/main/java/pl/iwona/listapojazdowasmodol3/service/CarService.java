@@ -69,22 +69,6 @@ public class CarService implements CarServiceInter {
         return false;
     }
 
-//        if (findCar.isPresent()) {
-//            findCar.map(element -> {
-//                element.setModel(updCar.getModel());
-//                element.setMark(updCar.getMark());
-//                element.setColor(updCar.getColor());
-//                return element;
-//            });
-//            findCar.orElseGet(() -> {
-//                updCar.setId(id);
-//
-//                boolean save = save(updCar);
-//                return (Car) save(updCar);
-//            });
-//        }
-//        return false;
-//    }
 
     @Override //    patch
     public boolean changeColor(Long carId, Color color) {
