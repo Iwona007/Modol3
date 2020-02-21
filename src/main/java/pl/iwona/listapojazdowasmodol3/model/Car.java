@@ -1,9 +1,11 @@
 package pl.iwona.listapojazdowasmodol3.model;
 
+import org.springframework.hateoas.ResourceSupport;
+
 import java.util.Objects;
 
-public class Car {
-    private Long id;
+public class Car extends ResourceSupport {
+    private Long carId;
     private String mark;
     private String model;
     private Color color;
@@ -11,19 +13,19 @@ public class Car {
     public Car() {
     }
 
-    public Car(Long id, String mark, String model, Color color) {
-        this.id = id;
+    public Car(Long carId, String mark, String model, Color color) {
+        this.carId = carId;
         this.mark = mark;
         this.model = model;
         this.color = color;
     }
 
-    public Long getId() {
-        return id;
+     public Long getCarId() {
+        return carId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setCarId(Long carId) {
+        this.carId = carId;
     }
 
     public String getMark() {
@@ -59,19 +61,19 @@ public class Car {
             return false;
         } else {
             Car car = (Car) obj;
-            return Objects.equals(id, car.id);
+            return Objects.equals(carId, car.carId);
         }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(carId);
     }
 
     @Override
     public String toString() {
         return "Car{" +
-                "id=" + id +
+                "id=" + carId+
                 ", mark='" + mark + '\'' +
                 ", model='" + model + '\'' +
                 ", color=" + color +
