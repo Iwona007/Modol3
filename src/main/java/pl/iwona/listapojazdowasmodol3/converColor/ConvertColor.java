@@ -1,7 +1,8 @@
-package pl.iwona.listapojazdowasmodol3.model;
+package pl.iwona.listapojazdowasmodol3.converColor;
 
 import org.springframework.stereotype.Component;
 import pl.iwona.listapojazdowasmodol3.exception.ColorNotFound;
+import pl.iwona.listapojazdowasmodol3.model.Color;
 
 import java.util.EnumSet;
 

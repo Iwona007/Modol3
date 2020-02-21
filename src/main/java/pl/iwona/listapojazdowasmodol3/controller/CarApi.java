@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.iwona.listapojazdowasmodol3.model.Car;
-import pl.iwona.listapojazdowasmodol3.model.ConvertColor;
+import pl.iwona.listapojazdowasmodol3.converColor.ConvertColor;
 import pl.iwona.listapojazdowasmodol3.service.CarServiceInter;
 
 import java.util.List;
