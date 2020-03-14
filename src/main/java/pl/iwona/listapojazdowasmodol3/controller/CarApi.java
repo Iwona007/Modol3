@@ -1,5 +1,6 @@
 package pl.iwona.listapojazdowasmodol3.controller;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
@@ -18,7 +19,7 @@ import java.util.Optional;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 
 @RestController
-@RequestMapping(value="/api/cars", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,})
+@RequestMapping(value = "/api/cars", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,})
 public class CarApi {
 
     private CarServiceInter carServiceInter;
@@ -30,6 +31,7 @@ public class CarApi {
         this.convertColor = convertColor;
     }
 
+    @ApiOperation(value = "Get all cars")
     @GetMapping
     public ResponseEntity<Resources<Car>> getAllCars() {  //Liste zamieniam na Resources
         List<Car> carsList = carServiceInter.getAll();
@@ -39,19 +41,21 @@ public class CarApi {
         return new ResponseEntity<>(carResources, HttpStatus.OK);
     }
 
-    @GetMapping ("/{carId}") //(value = ("/{carId}"), produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE} )
-    public ResponseEntity<Resource<Car>> getById(@PathVariable Long carId) {
+    @ApiOperation(value = "Get car by Id")
+    @GetMapping("/{carId}")
+    //(value = ("/{carId}"), produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE} )
+    public ResponseEntity<Resource<Car>> getById(@PathVariable Long carId) {   //
         Link link = linkTo(CarApi.class).slash(carId).withSelfRel();
         Optional<Car> findCar = carServiceInter.carById(carId);
-
-        Resource<Car> carResource = new Resource<>(findCar.get(), link);
-        return findCar.map(car -> new ResponseEntity<>(carResource, HttpStatus.OK)).orElseGet(() ->
-                new ResponseEntity<>(HttpStatus.NOT_FOUND)); // 500Internal Server Error gdy mam Resource
-//        return findCar.map(car -> new ResponseEntity<>(findCar.get(), HttpStatus.OK)).orElseGet(() ->
-//                new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        if (findCar.isPresent()) {
+            Resource<Car> carResource = new Resource<>(findCar.get(), link);
+            return new ResponseEntity<>(carResource, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping ("/color/{color}")
+    @ApiOperation(value = "Get car by color")
+    @GetMapping("/color/{color}")
     public ResponseEntity<Resources<Car>> getByColor(@PathVariable String color) { // zamieniam liste na na Resources
         List<Car> findColor = carServiceInter.carByColor(color);
         findColor.forEach(car -> car.add(linkTo(CarApi.class).slash(car.getCarId()).withSelfRel()));
@@ -64,60 +68,58 @@ public class CarApi {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @ApiOperation(value = "Add a new car")
     @PostMapping("/new")
-    public ResponseEntity addCar(@RequestBody Car car) {
+    public ResponseEntity <Car> addCar(@RequestBody Car car) {
         if (carServiceInter.save(car)) {
-            return new ResponseEntity<>(true, HttpStatus.CREATED);
+            return new ResponseEntity(true, HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // sprawdzic bad request
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping("/update/{id}")
+    @ApiOperation(value = "Modify car  ")
+    @PutMapping("/modify/{id}")
     public ResponseEntity<Resource<Car>> modifyCar(@PathVariable Long id, @RequestBody Car modifyCar) {
         Link link = linkTo(CarApi.class).slash(id).withSelfRel();
-
         if (carServiceInter.changeCar(id, modifyCar)) {
             Resource<Car> carResource = new Resource(carServiceInter.changeCar(id, modifyCar), link);
-            return new ResponseEntity(carResource,HttpStatus.CREATED);
+            return new ResponseEntity<>(carResource, HttpStatus.CREATED);
         } else if (!carServiceInter.changeCar(id, modifyCar)) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PatchMapping("/{id}/color/{newColor}}") // tu nie działa convertowanie z enum
-    public ResponseEntity<Car> updateColor(@PathVariable Long id, @PathVariable String newColor) {
-        boolean change = carServiceInter.changeColor(id, convertColor.convertToEnum(newColor));
-        if (change) {
-            return new ResponseEntity(HttpStatus.CREATED);
-        }else if(!change){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    @ApiOperation(value = "Change car color")
+    @PatchMapping("/{carId}/color/{newColor}")
+    public ResponseEntity<Car> updateColor(@PathVariable Long carId, @PathVariable String newColor) {
+      boolean changeColor = carServiceInter.changeColor(carId, convertColor.convertToEnum(newColor));
+        if (changeColor) {
+            return new ResponseEntity( true, HttpStatus.CREATED);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND); // mam odpowwiedz not founded ale bez wyjatku
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @ApiOperation(value = "Change car brand")
     @PatchMapping("/{id}/mark/{newMark}")
-    public ResponseEntity updateModel(@PathVariable Long id, @PathVariable String newMark){
+    public ResponseEntity<Resource<Car>> updateMark(@PathVariable Long id, @PathVariable String newMark) {
+        Link link = linkTo(CarApi.class).slash(id).withSelfRel();
         boolean changedMark = carServiceInter.changeMark(id, newMark);
-        if(changedMark){
-            return new ResponseEntity<>(HttpStatus.OK);
-        }else if(!changedMark){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if (changedMark) {
+            Resource<Car> carResource = new Resource(changedMark,link);
+            return new ResponseEntity<>(carResource,HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @ApiOperation(value = "delete car by Id")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Car> deleteById(@PathVariable Long id) {
+        boolean remove = carServiceInter.removeById(id);
+        if (remove) {
+            return new ResponseEntity(true, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity <Car> deleteById(@PathVariable Long id) {
-//        Link link = linkTo(CarApi.class).slash(id).withSelfRel();
-        boolean remove = carServiceInter.removeById(id);
-//        Resource<Car> carResource = new Resource(carServiceInter.removeById(id), link);
-        if (remove) {
-            return new ResponseEntity<>( HttpStatus.OK);
-        }else if(!remove){
-            return new ResponseEntity<>( HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);// 500Internal Server Error gdy mam Resource
-    }
 }
-

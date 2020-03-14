@@ -3,7 +3,6 @@ package pl.iwona.listapojazdowasmodol3.service;
 
 import org.springframework.stereotype.Service;
 import pl.iwona.listapojazdowasmodol3.exception.CarNotExist;
-import pl.iwona.listapojazdowasmodol3.exception.ColorNotFound;
 import pl.iwona.listapojazdowasmodol3.model.Car;
 import pl.iwona.listapojazdowasmodol3.model.Color;
 
@@ -29,23 +28,16 @@ public class CarService implements CarServiceInter {
         return cars;
     }
 
-    public List<Car> getCars() {
-        return cars;
-    }
-
-
     @Override  //get
     public Optional<Car> carById(Long carId) {
-        return cars.stream().filter(car -> car.getCarId() == carId).findFirst();
-//        if(findCarById.isPresent()){
-//             findCarById.get();
-//        }
-//        throw new CarNotExist(carId); / tez nie dzial
+        Optional<Car> findCarById = cars.stream().filter(car -> car.getCarId() == carId).findFirst();
+        findCarById.orElseThrow(() -> new CarNotExist(carId));
+        return findCarById;
     }
 
     @Override //get by color
     public List<Car> carByColor(String color) {
-        return getCars().stream().filter(car -> color.equalsIgnoreCase(car.getColor().name()))
+        return getAll().stream().filter(car -> color.equalsIgnoreCase(car.getColor().name()))
                 .collect(Collectors.toList());
     }
 
@@ -69,6 +61,22 @@ public class CarService implements CarServiceInter {
         return false;
     }
 
+//        if (findCar.isPresent()) {
+//            findCar.map(element -> {
+//                element.setModel(updCar.getModel());
+//                element.setMark(updCar.getMark());
+//                element.setColor(updCar.getColor());
+//                return element;
+//            });
+//            findCar.orElseGet(() -> {
+//                updCar.setId(id);
+//
+//                boolean save = save(updCar);
+//                return (Car) save(updCar);
+//            });
+//        }
+//        return false;
+//    }
 
     @Override //    patch
     public boolean changeColor(Long carId, Color color) {
@@ -76,8 +84,9 @@ public class CarService implements CarServiceInter {
         if (first.isPresent()) {
             Car carColor = first.get();
             carColor.setColor(color);
+            return true;
         }
-        throw new ColorNotFound(String.format("Invalid enum type of enum Color: %s", color));
+        return false;
     }
 
     @Override
@@ -88,7 +97,7 @@ public class CarService implements CarServiceInter {
             carModel.setMark(newMark);
             return true;
         }
-        return false;
+        throw new CarNotExist(id);
     }
 
     @Override //delete
@@ -98,12 +107,6 @@ public class CarService implements CarServiceInter {
             cars.remove(first.get());
             return true;
         }
-        throw new CarNotExist(carId); // nie wyzuca wyjatku ale dlaczego?
+        throw new CarNotExist(carId);
     }
-
-
-//    public boolean removeByID(Long id) {
-//        Optional<Car> first = cars.stream().filter(car -> car.getId() == id).findFirst();
-//     return first.map(car -> cars.remove(car)).orElseThrow(() -> new CarNotExist(id));
-//    } tutak wyzyca blad 500
 }

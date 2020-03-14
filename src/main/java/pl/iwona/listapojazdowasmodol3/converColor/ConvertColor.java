@@ -13,7 +13,7 @@ public class ConvertColor {
         return EnumSet.allOf(Color.class).stream()
                 .filter(color1 -> color1.name().equalsIgnoreCase(color))
                 .findAny()
-                .orElseThrow(() -> new ColorNotFound(String.format("Invalid enum type of enum Color: %s", color)));
+                .orElseThrow(() -> new ColorNotFound(color));
     }
 
 }
