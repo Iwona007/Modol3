@@ -11,10 +11,13 @@ PUT car,
 PATCH ,
 DELETE: deletByID,
 
++wyjatki
+
 Przy starcie aplikacji mają dodawać się 3 pozycje.
 
 Dla ambitnych:
  zwracanie danych w postaci XML
  obsługa Swgger UI
  HATEOAS
+ + validacja
 
