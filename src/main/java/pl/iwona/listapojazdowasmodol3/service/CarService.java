@@ -1,22 +1,26 @@
 package pl.iwona.listapojazdowasmodol3.service;
 
 
-import org.springframework.stereotype.Service;
-import pl.iwona.listapojazdowasmodol3.exception.CarNotExist;
-import pl.iwona.listapojazdowasmodol3.model.Car;
-import pl.iwona.listapojazdowasmodol3.model.Color;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import pl.iwona.listapojazdowasmodol3.converColor.ConvertColor;
+import pl.iwona.listapojazdowasmodol3.exception.CarNotExist;
+import pl.iwona.listapojazdowasmodol3.model.Car;
+import pl.iwona.listapojazdowasmodol3.model.Color;
 
 @Service
 public class CarService implements CarServiceInter {
 
     private List<Car> cars;
+    private ConvertColor convertColor;
 
-    public CarService() {
+    @Autowired
+    public CarService(ConvertColor convertColor) {
+        this.convertColor = convertColor;
         this.cars = new ArrayList<>();
         cars.add(new Car(1L, "Ferrari", "599 GTB Fiorano", Color.RED));
         cars.add(new Car(2L, "Audi", "A6", Color.NAVY_BLUE));
@@ -37,7 +41,7 @@ public class CarService implements CarServiceInter {
 
     @Override //get by color
     public List<Car> carByColor(String color) {
-        return getAll().stream().filter(car -> color.equalsIgnoreCase(car.getColor().name()))
+        return getAll().stream().filter(car -> color.equals(car.getColor().name()))
                 .collect(Collectors.toList());
     }
 

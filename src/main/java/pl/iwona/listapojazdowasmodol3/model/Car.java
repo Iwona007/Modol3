@@ -1,13 +1,22 @@
 package pl.iwona.listapojazdowasmodol3.model;
 
-import org.springframework.hateoas.ResourceSupport;
-
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import org.springframework.hateoas.RepresentationModel;
 
-public class Car extends ResourceSupport {
+public class Car extends RepresentationModel {
+
+    @NotNull
     private Long carId;
+    @NotBlank
     private String mark;
+    @NotBlank
     private String model;
+    @NotNull
+    @JsonEnumDefaultValue
+//    @Pattern(regexp ="^RED$|^BLUE$|^NAVY_BLUE$|^SILVER$")
     private Color color;
 
     public Car() {
@@ -20,7 +29,7 @@ public class Car extends ResourceSupport {
         this.color = color;
     }
 
-     public Long getCarId() {
+    public Long getCarId() {
         return carId;
     }
 
@@ -73,7 +82,7 @@ public class Car extends ResourceSupport {
     @Override
     public String toString() {
         return "Car{" +
-                "id=" + carId+
+                "id=" + carId +
                 ", mark='" + mark + '\'' +
                 ", model='" + model + '\'' +
                 ", color=" + color +

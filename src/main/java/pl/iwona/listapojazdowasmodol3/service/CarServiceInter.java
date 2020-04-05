@@ -13,6 +13,7 @@ public interface CarServiceInter {
     Optional<Car> carById(Long carId);
 
     List<Car> carByColor(String color);
+//    List<Car> carByColor(Color color);
 
     boolean save(Car car);
 
