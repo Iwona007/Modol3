@@ -41,7 +41,7 @@ public class CarService implements CarServiceInter {
 
     @Override //get by color
     public List<Car> carByColor(String color) {
-        return getAll().stream().filter(car -> color.equals(car.getColor().name()))
+        return getAll().stream().filter(car -> color.equalsIgnoreCase(car.getColor().name()))
                 .collect(Collectors.toList());
     }
 
