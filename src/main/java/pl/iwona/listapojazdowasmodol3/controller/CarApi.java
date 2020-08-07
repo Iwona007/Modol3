@@ -20,7 +20,7 @@ import pl.iwona.listapojazdowasmodol3.service.CarServiceInter;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
-@RequestMapping(value = "/api/cars", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE,})
+@RequestMapping(value = "/api/cars", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 public class CarApi {
 
     private CarServiceInter carServiceInter;
@@ -59,8 +59,9 @@ public class CarApi {
     @GetMapping("/color/{color}")
     public ResponseEntity<CollectionModel<Car>> getByColor(@PathVariable @NotNull String color) { // zamieniam liste na na Resources
         List<Car> findColor = carServiceInter.carByColor(color);
-        findColor.forEach(car -> car.addIf( !car.hasLinks(), ()->linkTo(CarApi.class).slash(car.getCarId()).withSelfRel()));
-        findColor.forEach(car -> car.addIf(!car.hasLinks(), ()->linkTo(CarApi.class).withRel("all colors")));
+        findColor.forEach(car -> car.addIf(!car.hasLinks(), ()->linkTo(CarApi.class).slash(car.getCarId()).withSelfRel()));
+        findColor.forEach(car -> car.addIf(car.hasLinks(),()-> linkTo(CarApi.class).slash("/color/"+ car.getColor())
+                .withRel("all colors")));
         Link link = linkTo(CarApi.class).withSelfRel();
         CollectionModel<Car> carCollection = new CollectionModel<>(findColor, link);
             return new ResponseEntity<>(carCollection, HttpStatus.OK);

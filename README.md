@@ -1,4 +1,4 @@
-# Modol-3
+# Car Api dla Modółu 3 Akadmia Spring
 Akademia Spring modol 3 - REST API dla listy pojazdów
 
 Pojazd - pola: id, mark, model, color.
@@ -8,7 +8,7 @@ GET: getByID,
 GET: getByColor,
 POST car,
 PUT car,
-PATCH ,
+PATCH color and mark,
 DELETE: deletByID,
 
 +wyjatki

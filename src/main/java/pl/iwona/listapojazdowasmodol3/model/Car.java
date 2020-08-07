@@ -16,7 +16,6 @@ public class Car extends RepresentationModel {
     private String model;
     @NotNull
     @JsonEnumDefaultValue
-//    @Pattern(regexp ="^RED$|^BLUE$|^NAVY_BLUE$|^SILVER$")
     private Color color;
 
     public Car() {

@@ -53,6 +53,7 @@ public class CarService implements CarServiceInter {
     @Override //put
     public boolean changeCar(Long carId, Car changedCar) {
         Optional<Car> findCar = cars.stream().filter(car -> car.getCarId() == changedCar.getCarId()).findFirst();
+
         if (findCar.isPresent()) {
             Car car = findCar.get();
             car.setMark(changedCar.getMark());
@@ -64,23 +65,6 @@ public class CarService implements CarServiceInter {
         }
         return false;
     }
-
-//        if (findCar.isPresent()) {
-//            findCar.map(element -> {
-//                element.setModel(updCar.getModel());
-//                element.setMark(updCar.getMark());
-//                element.setColor(updCar.getColor());
-//                return element;
-//            });
-//            findCar.orElseGet(() -> {
-//                updCar.setId(id);
-//
-//                boolean save = save(updCar);
-//                return (Car) save(updCar);
-//            });
-//        }
-//        return false;
-//    }
 
     @Override //    patch
     public boolean changeColor(Long carId, Color color) {
@@ -106,7 +90,7 @@ public class CarService implements CarServiceInter {
 
     @Override //delete
     public boolean removeById(Long carId) {
-        Optional<Car> first = cars.stream().filter(car -> car.getCarId() == carId).findFirst();
+        Optional<Car> first = carById(carId);
         if (first.isPresent()) {
             cars.remove(first.get());
             return true;
