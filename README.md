@@ -21,8 +21,12 @@ Dla ambitnych:
  HATEOAS
  + validacja
 
+Snapshot- Swagger
 ![Snapshot](https://github.com/Iwona007/Modol3/tree/master/snapshots/Swagger.PNG)
+Snapshot- xml-content
 ![Snapshot](https://github.com/Iwona007/Modol3/tree/master/snapshots/xml-content.PNG)
+Snapshot- Postman: cars-all
 ![Snapshot](https://github.com/Iwona007/Modol3/tree/master/snapshots/cars-all.PNG)
+Snapshot- Postman: patch-color
 ![Snapshot](https://github.com/Iwona007/Modol3/tree/master/snapshots/patch-color.PNG)
 
