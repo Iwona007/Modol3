@@ -21,3 +21,8 @@ Dla ambitnych:
  HATEOAS
  + validacja
 
+![Snapshot](https://github.com/Iwona007/Modol3/tree/master/snapshots/Swagger.PNG)
+![Snapshot](https://github.com/Iwona007/Modol3/tree/master/snapshots/xml-content.PNG)
+![Snapshot](https://github.com/Iwona007/Modol3/tree/master/snapshots/cars-all.PNG)
+![Snapshot](https://github.com/Iwona007/Modol3/tree/master/snapshots/patch-color.PNG)
+
