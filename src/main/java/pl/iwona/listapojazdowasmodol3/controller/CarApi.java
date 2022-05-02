@@ -1,10 +1,6 @@
 package pl.iwona.listapojazdowasmodol3.controller;
 
 import io.swagger.annotations.ApiOperation;
-import java.util.List;
-import java.util.Optional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -16,6 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import pl.iwona.listapojazdowasmodol3.converColor.ConvertColor;
 import pl.iwona.listapojazdowasmodol3.model.Car;
 import pl.iwona.listapojazdowasmodol3.service.CarServiceInter;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 

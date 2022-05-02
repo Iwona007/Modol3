@@ -1,16 +1,17 @@
 package pl.iwona.listapojazdowasmodol3.service;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.iwona.listapojazdowasmodol3.converColor.ConvertColor;
 import pl.iwona.listapojazdowasmodol3.exception.CarNotExist;
 import pl.iwona.listapojazdowasmodol3.model.Car;
 import pl.iwona.listapojazdowasmodol3.model.Color;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CarService implements CarServiceInter {
@@ -34,7 +35,7 @@ public class CarService implements CarServiceInter {
 
     @Override  //get
     public Optional<Car> carById(Long carId) {
-        Optional<Car> findCarById = cars.stream().filter(car -> car.getCarId() == carId).findFirst();
+        Optional<Car> findCarById = cars.stream().filter(car -> car.getCarId().equals(carId)).findFirst();
         findCarById.orElseThrow(() -> new CarNotExist(carId));
         return findCarById;
     }
@@ -52,7 +53,7 @@ public class CarService implements CarServiceInter {
 
     @Override //put
     public boolean changeCar(Long carId, Car changedCar) {
-        Optional<Car> findCar = cars.stream().filter(car -> car.getCarId() == changedCar.getCarId()).findFirst();
+        Optional<Car> findCar = cars.stream().filter(car -> car.getCarId().equals(changedCar.getCarId())).findFirst();
 
         if (findCar.isPresent()) {
             Car car = findCar.get();
