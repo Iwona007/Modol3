@@ -31,20 +31,20 @@ jobs:
   deploy:
     docker:
     - image: circleci/buildpack-deps:18.04-scm-browsers-legacy
-      steps:
-      - checkout
-      - run:
-          name: deploy app an heroku
-          command:
-            git push https://heroku:$HEROKU_API_KEY_@git.eroku.com/$HEROKU_APP_NAME.git master
+    steps:
+    - checkout
+    - run:
+        name: deploy app an heroku
+        command: |
+          git push https://heroku:$HEROKU_API_KEY_@git.eroku.com/$HEROKU_APP_NAME.git master
 
 
 workflows:
   version: 2.1
   build-deploy:
     jobs:
-    - build-and-test
-    - deploy:
-        requires:
-          - build-and-test
+      - build-and-test
+      - deploy:
+          requires:
+            - build-and-test
 
